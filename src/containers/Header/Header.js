@@ -7,7 +7,10 @@ import { adminMenu } from './menuApp';
 import './Header.scss';
 
 class Header extends Component {
-
+ async componentDidMount () {
+    
+    
+ }
     render() {
         const { processLogout } = this.props;
 
