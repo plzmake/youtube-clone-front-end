@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import * as actions from "../../store/actions";
-import Navigator from '../../components/Navigator';
-import { adminMenu } from '../Header/menuApp';
-import { abbreviateNumber } from "js-abbreviation-number";
+
 import LeftNav from './LeftNav';
 import { fetchDataSearchHomPageFromApi} from '../../utils/api';
 import VideoLength from '../../utils/videoLength';
@@ -29,16 +25,10 @@ class HomePage extends Component {
     }///results_search_query/:search
     async componentDidMount() {
 
-        //let test = await testa ();
-        // let sortArr = fetchVideoDataChoice.items.sort((a, b) => {
-        //     return new Date(a.snippet.publishedAt) - new Date(b.snippet.publishedAt);
-        // });
-        //console.log('sort arr', sortArr)
-        //console.log('test', test)
+        
         let arrVideo = await fetchDataSearchHomPageFromApi('moba viet');
 
-        //let test = await fetchDataFromv3Api();
-        // console.log('test',test)
+        
         this.setState({
             isLoading: true
         })
@@ -99,8 +89,7 @@ class HomePage extends Component {
     }
     handleClickChoice = async (dataSearch) => {
         
-        //let test = await fetchDataFromv3Api();
-        // console.log('test',test)
+        
         this.setState({
             isLoading: true,
 
@@ -226,9 +215,7 @@ class HomePage extends Component {
                                                             <span className='item-video-info-title' onClick={() => this.handleViewDetailVideo(item)}>
                                                                 {item.video.title.substring(0,75)}{this.showEllipsis(item.video.title,75)}
                                                             </span>
-                                                            {/* <span className='item-video-info-des'>
-                                                    {item.video.descriptionSnippet}
-                                                </span> */}
+                                                           
                                                             <div className='item-video-author-title-icon' onClick={() => this.handleViewDetailChannel(item.video?.author?.channelId)}>
                                                                 {item.video?.author?.title}
                                                                 {item.video?.author?.badges[0]?.type === "VERIFIED_CHANNEL" && (

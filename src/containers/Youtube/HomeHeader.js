@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import * as actions from "../../store/actions";
-import Navigator from '../../components/Navigator';
-import { adminMenu } from '../Header/menuApp';
+
 //import './Header.scss';
 import { fetchDataAutoCompleteHomeHeaderFromApi } from '../../utils/api';
 import { SlMenu, } from "react-icons/sl";
 import { IoIosSearch, IoMdMic, IoMdKeypad } from "react-icons/io";
 import { RiVideoAddLine, RiKeyboardBoxFill, RiKeyboardLine, RiKeyboardFill } from "react-icons/ri";
 import { FiBell } from "react-icons/fi";
-import { CgClose } from "react-icons/cg";
+
 import LogoYTB from '../../assets/images/images/ytb.svg'
-import { Button } from 'reactstrap';
+
 import AsyncSelect from 'react-select/async';
 import { withRouter } from "react-router";
 class HomeHeader extends Component {

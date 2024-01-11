@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import * as actions from "../../store/actions";
-import Navigator from '../../components/Navigator';
-import { adminMenu } from '../Header/menuApp';
-import { abbreviateNumber } from "js-abbreviation-number";
+
 import LeftNav from './LeftNav';
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import {

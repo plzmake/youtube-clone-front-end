@@ -828,7 +828,7 @@ class Video extends Component {
                                                     <h5><b>{commentVideo.totalCommentsCount}{'  '} bình luận</b></h5>
                                                     <div className='sorted'>
                                                         <img src={sorted} />
-                                                        <h5>Sắp xếp theo</h5>
+                                                        <h5>Sắp xếp theos</h5>
                                                     </div>
                                                 </div>
                                                 <div className='write-comment'>

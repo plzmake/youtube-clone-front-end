@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import * as actions from "../../store/actions";
-import Navigator from '../../components/Navigator';
-import { adminMenu } from '../Header/menuApp';
-import LogoHomepage from '../../assets/images/images/homepage.svg'
+
 //import './Header.scss';
 import { categories } from '../../utils';
 import RightArrow from '../../assets/images/images/rightArrow.svg';
@@ -12,7 +8,7 @@ import CustomScrollbars from '../../components/CustomScrollbars';
 import YouLeftNav from '../../assets/images/images/youLeftNav.svg';
 
 import LeftNavTotalScreen from './LeftNavTotalScreen';
-import { MediaQuery } from 'react-responsive';
+
 class LeftNav extends Component {
     constructor(props) {
         super(props);
