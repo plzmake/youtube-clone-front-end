@@ -9,13 +9,14 @@ import { path } from '../utils'
 import HomePage from './Youtube/HomePage';
 import Video from './Youtube/Video';
 import Search from './Youtube/Search';
-import System from '../routes/System';
-import HomeHeader from './Youtube/HomeHeader';
+import Channel from './Youtube/Channel';
+import Post from './Youtube/Post';
+import PlayList from './Youtube/PlayList';
 import NotFound from './Youtube/NotFound';
 import { CustomToastCloseButton } from '../components/CustomToast';
-import Channel from './Youtube/Channel';
 
 //import HomePage from './Youtube/HomePage';
+
 class App extends Component {
 
     handlePersistorState = () => {
@@ -51,6 +52,9 @@ class App extends Component {
                                 <Route path={path.VIDEO} component={Video} />
                                 <Route path={path.SEARCH} component={Search} />
                                 <Route path={path.CHANNEL} component={Channel} />
+                                <Route path={path.POST} component={Post} />
+                                <Route path={path.PLAYLIST} component={PlayList} />
+
                                 <Route path = {path.ERROR} component= {NotFound}/>
                             </Switch>
                         </span>

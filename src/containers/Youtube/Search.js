@@ -19,9 +19,12 @@ class Search extends Component {
         super(props);
         this.state = {
             arrVideo: [],
-
-            isLoading: true
+            windowWidth: window.innerWidth,
+            isLoading: true,
+            isShowLeftNav:true,
+            isLeftNavTotalScreen:false
         };
+        this.handleResize = this.handleResize.bind(this);
     }
     async componentDidMount() {
         let arrVideo = await fetchDataSearchSearchFromApi(this.props.location.state.label);
@@ -39,6 +42,7 @@ class Search extends Component {
                 isLoading: true
             })
         }
+        window.addEventListener('resize', this.handleResize);
     }
     async componentDidUpdate(preProps, preState, snapshot) {
         if (preProps.location.state.label !== this.props.location.state.label) {
@@ -62,6 +66,12 @@ class Search extends Component {
             }
         }
     }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+    }
+    handleResize = () =>{
+        this.setState({ windowWidth: window.innerWidth });
+      }
     handleViewDetailVideo = (video) => {
         console.log('video', video);
 
@@ -82,20 +92,57 @@ class Search extends Component {
             return `${data}  `
         }
     }
+    handleViewDetailChannel =  (channelId,event) => {
+        event.stopPropagation();
+        this.props.history.push(`/channel/${channelId}`)
+        this.setState = {
+            arrVideoRelated: [],
+            video: {},
+            isShowMore: true,
+            commentVideo: {},
+            reloadVideo:true,
+            isLoading:true,
+            isLeftNavTotalScreen:false
+        }
+    }
+    hanleShowLeftNav = () => {
+        this.setState({
+            isShowLeftNav: !this.state.isShowLeftNav
+        })
+    }
+    handleShowLeftNavTotalScreen = () => {
+       
+        this.setState({
+            isLeftNavTotalScreen : !this.state.isLeftNavTotalScreen
+        })
+        console.log('isLeftNavTotalScreen',this.state.isLeftNavTotalScreen)
+    }
+    showEllipsis = (text,length) => {
+        let res = text?.length > length ? '...' :'';
+        return res;
+    }
+    
     render() {
         //const { processLogout } = this.props;
         console.log('this.props.search', this.props)
         let arrVideo = this.state.arrVideo;
         let isLoading = this.state.isLoading;
         return (<>
-            <HomeHeader selectedVideo={this.props.location.state.label}/>
+            <HomeHeader selectedVideo={this.props.location.state.label}
+            hanleShowLeftNav={this.hanleShowLeftNav}
+            handleShowLeftNavTotalScreen={this.handleShowLeftNavTotalScreen}/>
+            
             <div className='youtube-body'>
-                <LeftNav />
+            <LeftNav isShowLeftNav={this.state.isShowLeftNav}
+                        isLeftNavTotalScreen={this.state.isLeftNavTotalScreen}
+                        handleShowLeftNavTotalScreen={this.handleShowLeftNavTotalScreen}
+                />
                 <CustomScrollbars style={{ height: '100vh', width: '100%' }}>
                     {isLoading && <div class="ring">Loading
                                         <span></span>
                                 </div>}
-                    {!isLoading && (<div className='container-search'>
+                    {!isLoading && 
+                    (<div className='container-search'>
                         {arrVideo.length > 0 && arrVideo.map((item, index) => {
                             if (item.type === 'video') {
                                 return (
@@ -116,10 +163,10 @@ class Search extends Component {
 
                                                 <div className='item-video-author'>
                                                     <span className='item-video-info-title'>
-                                                        {item.video?.title}
+                                                        {item.video?.title.substring(0,(this.state.windowWidth-419)/3)}{this.showEllipsis(item.video?.title,(this.state.windowWidth-419)/3)}
                                                     </span>
                                                     <div className='item-video-author-view-pushtime'>
-                                                        <div>{`${this.test(item.video?.stats?.views)}lượt xem`}</div>
+                                                        <div className='item-video-author-view'>{`${this.test(item.video?.stats?.views)}lượt xem`}</div>
                                                         <div className='dot'><h6>&#x2022;</h6></div>
                                                         <div className='item-video-author-pushtime'>
                                                             {item.video.publishedTimeText}
@@ -127,17 +174,19 @@ class Search extends Component {
                                                     </div>
 
                                                     <div className='item-video-author-title-icon'>
-                                                        <div className='item-video-avatar'>
+                                                        <div className='item-video-avatar'onClick={(event) => this.handleViewDetailChannel(item.video?.author?.channelId,event)}>
                                                             <img className='item-video-avatar-img'
                                                                 src={item.video?.author?.avatar[0]?.url} />
                                                         </div>
-                                                        {item.video?.author?.title}
+                                                        <span className='item-video-author-title'
+                                                        onClick={(event) => this.handleViewDetailChannel(item.video?.author?.channelId,event)}
+                                                        >{item.video?.author?.title}</span>
                                                         {item.video?.author?.badges[0]?.type === "VERIFIED_CHANNEL" && (
                                                             <BsFillCheckCircleFill className='icon-item-video-author' />
                                                         )}
                                                     </div>
                                                     <span className='item-video-info-des'>
-                                                        {item.video?.descriptionSnippet?.substring(0, 120)}...
+                                                        {item.video?.descriptionSnippet?.substring(0, (this.state.windowWidth-386)/2)}{this.showEllipsis(item.video?.descriptionSnippet,(this.state.windowWidth-386)/2)}
                                                     </span>
                                                 </div>
                                             </div>
@@ -151,7 +200,8 @@ class Search extends Component {
 
                         })}
 
-                    </div>)}
+                    </div>)
+                    }
                 </CustomScrollbars>
             </div>
         </>

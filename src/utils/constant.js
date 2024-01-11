@@ -27,14 +27,19 @@ import Country from '../assets/images/images/country.svg';
 import SharedChannel from '../assets/images/images/shareChannel.svg';
 import ReportChannel from '../assets/images/images/reportChannel.svg';
 import IconPlayList from '../assets/images/images/iconPlayList.svg';
+import SavePlayList from '../assets/images/images/SavePlayList.svg';
+import SharePlayList from '../assets/images/images/shareWhite.svg';
+import DownLoad from '../assets/images/images/DownLoad.svg';
+import Botton from '../assets/images/images/buttonWhite.svg';
 export const path = {
     HOME: '/',
     VIDEO: '/video/:id',
     LOG_OUT: '/logout',
     SEARCH: '/search/:search',
     ERROR: '*',
-    CHANNEL: '/channel/:channel'
-
+    CHANNEL: '/channel/:channel',
+    POST: '/post/:postId',
+    PLAYLIST: '/playlist/:playlistId'
 
 };
 
@@ -105,7 +110,7 @@ export const listChoice = [
     'Tất cả', 'Âm nhạc', 'Trực tiếp', 'Hoạt họa', 'Trò chơi', 'Hài kịch', 'Đọc rap', 'Roblox', 'Nấu ăn', 'Hoạt hình'
 ]
 export const listChoiceChannel = ['Trang chủ', 'Video', 'Danh sách phát', 'Cộng đồng']
-export const listChoiceSubChannel = ['Mới nhất','Phổ biến','Cũ nhất']
+export const listChoiceSubChannel = ['Mới nhất', 'Phổ biến', 'Cũ nhất']
 export const detailChannel = [
     UserName,
     SubscribersText,
@@ -118,9 +123,15 @@ export const detailChannel = [
     IconPlayList
 ]
 export const listChoiceVideoChannel = [
-    {name:'Mới nhất', key:'date'},
-    {name:'Phổ biến', key:'viewCount'},
-    {name:'Cũ nhất', key:'old'},
+    { name: 'Mới nhất', key: 'date' },
+    { name: 'Phổ biến', key: 'viewCount' },
+    { name: 'Cũ nhất', key: 'old' },
+]
+export const playList = [
+    SavePlayList,
+    SharePlayList,
+    DownLoad,
+    Botton
 ]
 
 

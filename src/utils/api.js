@@ -54,6 +54,24 @@ export const fetchDataVideoCommentsVideoFromApi = async (id) => {
   const { data } = await axios.request(options);
   return data;
 };
+export const fetchDataReplyCommentVideoFromApi = async (VideoID,cursor) => {
+  const options = {
+    method: 'GET',
+    url: 'https://youtube138.p.rapidapi.com/video/comments/',
+    params: {
+      id: VideoID,
+      cursor: cursor,
+      hl: 'vi',
+      gl: 'US'
+    },
+    headers: {
+      'X-RapidAPI-Key': process.env.REACT_APP_YOUTUBE_API_KEY_GET_REPLY_COMMENT_VIDEO,
+      'X-RapidAPI-Host': 'youtube138.p.rapidapi.com'
+    }
+  };
+  const { data } = await axios.request(options);
+  return data;
+};
 export const fetchDataVideoRelatedContentsVideoFromApi = async (id) => {
   const options = {
     method: 'GET',
@@ -158,7 +176,7 @@ export const fetchDataArrVideoInPlayListChannelFromApi = async (playlistId, maxR
       maxResults: maxResults
     },
     headers: {
-      'X-RapidAPI-Key': '6d6b02d722msh0b84e451ecc0abap15460ejsn8eff251cec6b',
+      'X-RapidAPI-Key': process.env.REACT_APP_YOUTUBE_API_KEY_DATA_ARR_VIDEO_IN_PLAY_LIST_CHANNEL,
       'X-RapidAPI-Host': 'youtube-v311.p.rapidapi.com'
     }
   };
@@ -166,12 +184,12 @@ export const fetchDataArrVideoInPlayListChannelFromApi = async (playlistId, maxR
   return data;
 }
 
-export const fetchDataArrPostCommunityChannelFromApi = async (channelIdId) => {
+export const fetchDataArrPostCommunityChannelFromApi = async (channelId) => {
   const options = {
     method: 'GET',
     url: 'https://youtube138.p.rapidapi.com/channel/community/',
     params: {
-      id: channelIdId
+      id: channelId
     },
     headers: {
       'X-RapidAPI-Key': process.env.REACT_APP_YOUTUBE_API_KEY_ARR_POST_COMMUNITY_CHANNEL,
@@ -182,7 +200,7 @@ export const fetchDataArrPostCommunityChannelFromApi = async (channelIdId) => {
   return data;
 }
 
-export const fetchArrVideoDataChannelChoiceFromApi = async (channelId, order,publishedBefore = new Date()) => {
+export const fetchArrVideoDataChannelChoiceFromApi = async (channelId, order,publishedBefore = new Date(),maxResults = '10') => {
   // return new Promise( async(res,rej) => {
   // try {
   //  let data ={};
@@ -192,7 +210,7 @@ export const fetchArrVideoDataChannelChoiceFromApi = async (channelId, order,pub
     params: {
       //part: 'snippet,contentDetails,statistics',
       part: 'snippet',
-      maxResults: '10',
+      maxResults: maxResults,
       order: order,
       channelId: channelId,
       safeSearch: 'none',
@@ -225,7 +243,7 @@ export const fetchDetailVideoDataChannelFromApi = async (id) => {
           maxResults: '5'
         },
         headers: {
-          'X-RapidAPI-Key': '394a9167e4mshf6df1fef3710865p1f0c4cjsna6576d6bfb0d',
+          'X-RapidAPI-Key': process.env.REACT_APP_YOUTUBE_API_KEY_GET_DETAIL_VIDEO_DATA_CHANNEL,
           'X-RapidAPI-Host': 'youtube-v311.p.rapidapi.com'
         }
       };
@@ -233,4 +251,75 @@ export const fetchDetailVideoDataChannelFromApi = async (id) => {
   
       return data;
 }
+ export const fetchDataCursorPostFromApi = async(postId) => {
+  const options = {
+    method: 'GET',
+    url: 'https://youtube138.p.rapidapi.com/community-post/details/',
+    params: {
+      id: postId
+    },
+    headers: {
+      'X-RapidAPI-Key': process.env.REACT_APP_YOUTUBE_API_KEY_GET_CURSOR_POST,
+      'X-RapidAPI-Host': 'youtube138.p.rapidapi.com'
+    }
+  };
+  let { data } = await axios.request(options);
+  
+      return data;
+ }
+ 
+ export const fetchDataCommentsPostFromApi = async(cursor) => {
+  const options = {
+    method: 'GET',
+    url: 'https://youtube138.p.rapidapi.com/community-post/comments/',
+    params: {
+      cursor: cursor
+    },
+    headers: {
+      'X-RapidAPI-Key': process.env.REACT_APP_YOUTUBE_API_KEY_GET_COMMENTS_POST,
+      'X-RapidAPI-Host': 'youtube138.p.rapidapi.com'
+    }
+  };
+  let { data } = await axios.request(options);
+  
+      return data;
+ }
+ 
+export const fetchDataVideoSearchInChannelFromApi = async(ChannelId,query) => {
+  const options = {
+    method: 'GET',
+    url: 'https://youtube138.p.rapidapi.com/channel/search/',
+    params: {
+      id: ChannelId,
+      q: query,
+      hl: 'vi',
+      gl: 'US'
+    },
+    headers: {
+      'X-RapidAPI-Key': process.env.REACT_APP_YOUTUBE_API_KEY_GET_VIDEO_IN_SEARCH_CHANNEL,
+      'X-RapidAPI-Host': 'youtube138.p.rapidapi.com'
+    }
+  };
+  let { data } = await axios.request(options);
+  
+      return data;
+ }
 
+ export const fetchDataChannelIdFromApi = async(videoId) => {
+  const options = {
+    method: 'GET',
+    url: 'https://youtube138.p.rapidapi.com/video/details/',
+    params: {
+      id: videoId,
+      hl: 'vi',
+      gl: 'US'
+    },
+    headers: {
+      'X-RapidAPI-Key': process.env.REACT_APP_YOUTUBE_API_KEY_GET_CHANNEL_ID,
+      'X-RapidAPI-Host': 'youtube138.p.rapidapi.com'
+    }
+  };
+  let { data } = await axios.request(options);
+  
+      return data;
+ }

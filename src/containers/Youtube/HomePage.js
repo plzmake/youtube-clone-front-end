@@ -21,7 +21,10 @@ class HomePage extends Component {
         this.state = {
             arrVideo: [],
             isLoading: true,
-            itemSelect: 'Tất cả'
+            itemSelect: 'Tất cả',
+            isShowLeftNav:true,
+            isLeftNavTotalScreen:false,
+            isClicklogo:false
         };
     }///results_search_query/:search
     async componentDidMount() {
@@ -32,7 +35,7 @@ class HomePage extends Component {
         // });
         //console.log('sort arr', sortArr)
         //console.log('test', test)
-        let arrVideo = await fetchDataSearchHomPageFromApi('le phi vu');
+        let arrVideo = await fetchDataSearchHomPageFromApi('moba viet');
 
         //let test = await fetchDataFromv3Api();
         // console.log('test',test)
@@ -54,70 +57,130 @@ class HomePage extends Component {
             })
         }
     }
+    async componentDidUpdate(preProps,preState,snapshot) {
+        if(preState.isClicklogo !== this.state.isClicklogo){
+            this.setState({
+                isLoading: true,
+    
+            })
+            let arrVideo = await fetchDataSearchHomPageFromApi('Tất cả');
+            await new Promise((resolve) => {
+                setTimeout(resolve, 1000);
+            });
+            console.log('arrVideo', arrVideo)
+            this.setState({
+                arrVideo: arrVideo.contents
+    
+            })
+            
+                this.setState({
+                    isLoading: false,
+                    itemSelect: 'Tất cả'
+                })
+        }
+    }
+    clickLogo = () => {
+        this.setState({
+            isClicklogo: !this.state.isClicklogo
+        })
+    }
     handleViewDetailVideo = (video) => {
         console.log('video', video);
 
         this.props.history.push(`/video/${video.video.videoId}`)
+        
         this.setState({
             arrVideo: [],
             isLoading: true,
-            itemSelect: 'Tất cả'
+            itemSelect: 'Tất cả',
+            isShowLeftNav:true,
+            isLeftNavTotalScreen:false
         })
     }
     handleClickChoice = async (dataSearch) => {
-        let arrVideo = await fetchDataSearchHomPageFromApi(dataSearch);
+        
         //let test = await fetchDataFromv3Api();
         // console.log('test',test)
         this.setState({
             isLoading: true,
 
         })
+        let arrVideo = await fetchDataSearchHomPageFromApi(dataSearch);
+        await new Promise((resolve) => {
+            setTimeout(resolve, 1000);
+        });
         console.log('arrVideo', arrVideo)
         this.setState({
             arrVideo: arrVideo.contents
 
         })
-        if (this.state.arrVideo.length > 0) {
+        
             this.setState({
-                isLoading: false
+                isLoading: false,
+                itemSelect: dataSearch
             })
-        } else {
-            this.setState({
-                isLoading: true
-            })
-        }
+        
 
-        this.setState({
-            itemSelect: dataSearch
-        })
+        
     }
     test = (data) => {
         if (data > 1000000) {//Math.floor(number * 10) % 10
-            let text = `${Math.floor(data / 1000000)},${Math.floor(data / 100000) % 10} M  `;
+            let text = `${Math.floor(data / 1000000)},${Math.floor(data / 100000) % 10} Tr  `;
             return text;
         } else if (data > 1000) {
-            let text = `${Math.floor(data / 1000)},${Math.floor(data / 100) % 10} K  `;
+            let text = `${Math.floor(data / 1000)},${Math.floor(data / 100) % 10} N  `;
             return text;
         } else {
             return `${data}  `
         }
     }
-    handleViewDetailChannel = async (channelId) => {
+    handleViewDetailChannel =  (channelId) => {
         this.props.history.push(`/channel/${channelId}`)
         this.setState = {
             arrVideo: [],
             isLoading: true,
-            itemSelect: 'Tất cả'
+            itemSelect: 'Tất cả',
+            isShowLeftNav:true,
+            isLeftNavTotalScreen:false
         }
     }
+    showEllipsis = (text, length) => {
+        let res = text.length > length ? '...' : '';
+        return res;
+    }
+    hanleShowLeftNav = () => {
+        this.setState({
+            isShowLeftNav: !this.state.isShowLeftNav,
+            
+            isLeftNavTotalScreen:false
+        })
+    }
+    handleShowLeftNavTotalScreen = () => {
+       
+        this.setState({
+            isLeftNavTotalScreen : !this.state.isLeftNavTotalScreen,
+            // isShowLeftNav:true
+            
+        })
+        console.log('isLeftNavTotalScreen',this.state.isLeftNavTotalScreen)
+    }
+    
     render() {
         //const { processLogout } = this.props;
         let arrVideo = this.state.arrVideo;
         let isLoading = this.state.isLoading;
         return (<>
-            <HomeHeader />
+            <HomeHeader 
+             hanleShowLeftNav={this.hanleShowLeftNav}
+             clickLogo={this.clickLogo}
+             handleShowLeftNavTotalScreen={this.handleShowLeftNavTotalScreen}
+            />
+            
             <div className='youtube-body'>
-                <LeftNav />
+                <LeftNav isShowLeftNav={this.state.isShowLeftNav}
+                        isLeftNavTotalScreen={this.state.isLeftNavTotalScreen}
+                        handleShowLeftNavTotalScreen={this.handleShowLeftNavTotalScreen}
+                />
                 <CustomScrollbars style={{ height: '100vh', width: '100%' }}>
 
                     {isLoading ? (<div class="ring">Loading
@@ -161,12 +224,12 @@ class HomePage extends Component {
 
                                                         <div className='item-video-author'>
                                                             <span className='item-video-info-title' onClick={() => this.handleViewDetailVideo(item)}>
-                                                                {item.video.title}
+                                                                {item.video.title.substring(0,75)}{this.showEllipsis(item.video.title,75)}
                                                             </span>
                                                             {/* <span className='item-video-info-des'>
                                                     {item.video.descriptionSnippet}
                                                 </span> */}
-                                                            <div className='item-video-author-title-icon'>
+                                                            <div className='item-video-author-title-icon' onClick={() => this.handleViewDetailChannel(item.video?.author?.channelId)}>
                                                                 {item.video?.author?.title}
                                                                 {item.video?.author?.badges[0]?.type === "VERIFIED_CHANNEL" && (
                                                                     <BsFillCheckCircleFill className='icon-item-video-author' />
