@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-//import './Header.scss';
+
 import { fetchDataAutoCompleteHomeHeaderFromApi } from '../../utils/api';
 import { SlMenu, } from "react-icons/sl";
 import { IoIosSearch, IoMdMic, IoMdKeypad } from "react-icons/io";
@@ -76,7 +76,7 @@ class HomeHeader extends Component {
         return result;
 
     }
-    loadOptions = async (searchValue, callback) => {
+    loadOptions =  (searchValue, callback) => {
         let test_arr = this.state.arrSelect;
         let filterOptions = test_arr;
 
@@ -156,8 +156,7 @@ class HomeHeader extends Component {
                         onChange={this.handleChange}
                         onMenuOpen={this.ShowIconSearch}
                         onMenuClose={this.HideIconSearch}
-                        //options={this.state.arrSelect}
-                        //className='form-control'
+                        
                         loadOptions={this.loadOptions}
                         defaultValue={this.state.arrSelect[0]}
                         placeholder={(this.state.selectedVideo.length > 0) ? this.state.selectedVideo : "Tìm kiếm"}

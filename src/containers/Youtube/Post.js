@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import * as actions from "../../store/actions";
-import Navigator from '../../components/Navigator';
-import { IoIosSearch } from "react-icons/io";
-import './HomePage.scss';
+
+
 import HomeHeader from './HomeHeader';
-import { withRouter } from "react-router";
-import LogoYTB from '../../assets/images/images/ytb.svg'
+
 import Shared from '../../assets/images/images/share.svg';
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import LeftNav from './LeftNav';
@@ -45,31 +41,7 @@ class Post extends Component {
         //
 
     }
-    async componentDidUpdate(preProps, preState, snapshot) {
-        // if(this.props.match.params.id !== preProps.match.params.id){
-        //     let video = await fetchDataVideoDetailsVideoFromApi(this.props.match.params.id);
-        // this.setState({
-        //     video: video
-        // })
-        // let commentVideo = await fetchDataVideoCommentsVideoFromApi(this.props.match.params.id)
-        // this.setState({
-        //     commentVideo: commentVideo
-        // })
-        // let arrVideoRelated = await fetchDataVideoRelatedContentsVideoFromApi(this.props.match.params.id)
-        // this.setState({
-        //     arrVideoRelated: arrVideoRelated.contents
-        // })
-        // if((Object.keys(this.state.video).length > 0) && (Object.keys(this.state.commentVideo).length > 0) &&(this.state.arrVideoRelated.length > 0 )){
-        //     this.setState({
-        //         isLoading:false
-        //     })
-        // } else {
-        //     this.setState({
-        //         isLoading:true
-        //     })
-        // }
-        // }
-    }
+    
     textPost = (text) => {
         let arr = text.split(/https/g);
         arr[1] = 'https' + arr[1];

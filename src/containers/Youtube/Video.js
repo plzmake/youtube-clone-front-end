@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import LeftNav from './LeftNav';
+
 import {
     fetchDataVideoDetailsVideoFromApi,
     fetchDataVideoCommentsVideoFromApi,
@@ -24,6 +24,7 @@ import RanDom from '../../assets/images/images/random.svg';
 import Repeat from '../../assets/images/images/repeat.svg';
 import Button from '../../assets/images/images/button.svg';
 import RightArrow from '../../assets/images/images/RightArrowPlayList.svg';
+import ShowPlayList from '../../assets/images/images/ShowPlayList.svg';
 import VideoLength from '../../utils/videoLength';
 import LeftNavTotalScreen from './LeftNavTotalScreen';
 import { withRouter } from "react-router";
@@ -46,6 +47,7 @@ class Video extends Component {
             arrChoice: [],
             isRandom: false,
             isRepeat: false,
+            isShowPlayList: true
 
         };
         this.player = React.createRef();
@@ -314,9 +316,7 @@ class Video extends Component {
             return { arrChoice: updatedArr };
         })
     }
-    handleShowWriteComment = () => {
 
-    }
     convertDurationToSeconds = (durationString) => {
         let match = durationString.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
         if (match) {
@@ -369,7 +369,7 @@ class Video extends Component {
                     }
                 }
 
-
+                this.props.history.push(`/video/${idVideo}/?idPlaylist=${idPlaylist}&index=${this.state.indexVideo}`, this.props.location?.state);
             }
             else if (this.state.isRandom && !this.state.isRepeat) {
                 let index = this.state.indexVideo;
@@ -387,7 +387,7 @@ class Video extends Component {
                     }
 
                 }
-
+                this.props.history.push(`/video/${idVideo}/?idPlaylist=${idPlaylist}&index=${this.state.indexVideo}`, this.props.location?.state);
             }
             else if (!this.state.isRandom && this.state.isRepeat) {
                 this.handleReplay()
@@ -409,9 +409,9 @@ class Video extends Component {
                     }
 
                 }
-
+                this.props.history.push(`/video/${idVideo}/?idPlaylist=${idPlaylist}&index=${this.state.indexVideo}`, this.props.location?.state);
             }
-            this.props.history.push(`/video/${idVideo}/?idPlaylist=${idPlaylist}&index=${this.state.indexVideo}`, this.props.location?.state);
+
         }
     }
     handleReplay = () => {
@@ -420,6 +420,16 @@ class Video extends Component {
             this.player.current.getInternalPlayer().playVideo(); // Bắt đầu phát lại video
         }
     };
+    handleShowPlayList = () => {
+        this.setState({
+            isShowPlayList: !this.state.isShowPlayList
+        })
+    }
+    playList = () => {
+        let newUrl = new URLSearchParams(this.props.location.search);
+        let idPlaylist = newUrl.get('idPlaylist');
+        this.props.history.push(`/playlist/${idPlaylist}`, this.props.location?.state);
+    }
     render() {
         console.log('this.props.match.params.id', this.props.match.params.id)
         console.log('this.props test new url', this.props);
@@ -432,7 +442,7 @@ class Video extends Component {
         // console.log('idplayList', newUrl.get('idPlaylist'));
         // console.log('index', newUrl.get('index'))
         //const { processLogout } = this.props;
-        let { arrVideoRelated, video, isShowMore, commentVideo, isLoading, isLeftNavTotalScreen, arrChoice, indexVideo, isRepeat, isRandom } = this.state;
+        let { arrVideoRelated, video, isShowMore, commentVideo, isLoading, isLeftNavTotalScreen, arrChoice, indexVideo, isRepeat, isRandom, windowWidth, isShowPlayList } = this.state;
         let id = this.props.match.params.id;
 
         return (
@@ -465,63 +475,119 @@ class Video extends Component {
                                 </div>
                                 {(this.props.location?.search !== '') &&
                                     (
-                                        <div className='container-video-in-playList'>
-                                            <div className='playlist-name'>
-                                                <h3><b>{this.props.location?.state?.PlayList?.snippet?.localized?.title}</b></h3>
+                                        (isShowPlayList ?
+                                            (<div className='container-video-in-playList'>
+                                                <div className='playlist-name' onClick={() => this.playList()}>
+                                                    <h3><b>{this.props.location?.state?.PlayList?.snippet?.localized?.title}</b></h3>
 
-                                            </div>
-                                            <div className='playlistInfo'>
-                                                <div className='name-channel'>
-                                                    {this.props.location?.state?.PlayList?.snippet?.channelTitle}{'  -  '}
-                                                    {newUrl.get('index')}/{this.props.location.state.arrVideoPlayListPromise.length}
-                                                    <img src={ClosePlayList} />
                                                 </div>
-                                                <div className='icon-interact'>
-                                                    <img className={isRepeat ? 'icon-interact-img-active' : 'icon-interact-img'} onClick={() => this.handleRepeat()} src={Repeat} />
-                                                    <img className={isRandom ? 'icon-interact-img-active' : 'icon-interact-img'} onClick={() => this.handleRandom()} src={RanDom} />
-                                                    <div className='save-playList'><img src={Button} /></div>
+                                                <div className='playlistInfo'>
+                                                    <div className='name-channel'>
+                                                        {this.props.location?.state?.PlayList?.snippet?.channelTitle}{'  -  '}
+                                                        {newUrl.get('index')}/{this.props.location.state.arrVideoPlayListPromise.length}
+                                                        <img src={ClosePlayList} onClick={() => this.handleShowPlayList()} />
+                                                    </div>
+                                                    <div className='icon-interact'>
+                                                        <div className='Repeat-play-list'>
+                                                            <img className={isRepeat ? 'icon-interact-img-active' : 'icon-interact-img'} onClick={() => this.handleRepeat()} src={Repeat} />
+                                                        </div>
+                                                        <div className='Random-play-list'>
+                                                            <img className={isRandom ? 'icon-interact-img-active' : 'icon-interact-img'} onClick={() => this.handleRandom()} src={RanDom} />
+                                                        </div>
+
+
+                                                        <div className='save-playList'><img src={Button} /></div>
+                                                    </div>
+
                                                 </div>
-
-                                            </div>
-                                            <CustomScrollbars style={{ height: '100vh', width: '100%', display: 'flex' }}>
-                                                {this.props.location?.state?.arrVideoPlayListPromise && this.props.location?.state?.arrVideoPlayListPromise.length > 0//this.state.arrPlayList[0].id
-                                                    &&
-                                                    (this.props.location?.state?.arrVideoPlayListPromise?.map((item, index) => {
-                                                        return (
-                                                            <div className="item-video" key={index} onClick={() => this.handleVideoInPlayList((index + 1), item.id)}>
-                                                                <div className='index-video'>
-                                                                    {(indexVideo === `${index + 1}`) ? <img src={RightArrow} /> : `${index + 1}`}
-                                                                </div>
-                                                                <div className='item-video-thumbnails'>
-                                                                    <img className="item-video-img" src={item.img} />
-                                                                    <VideoLength time={this.convertDurationToSeconds(item.duration)} />
-                                                                </div>
-                                                                <div className='item-video-info'>
-                                                                    <div className="item-video-title">
-                                                                        <h6><b>{item.title.substring(0, 63)}{this.showEllipsis(item.title, 63)}</b></h6>
+                                                <CustomScrollbars style={{ height: '370px', width: '100%', display: 'flex' }}>
+                                                    {this.props.location?.state?.arrVideoPlayListPromise && this.props.location?.state?.arrVideoPlayListPromise.length > 0//this.state.arrPlayList[0].id
+                                                        &&
+                                                        (this.props.location?.state?.arrVideoPlayListPromise?.map((item, index) => {
+                                                            return (
+                                                                <div className="item-video" key={index} onClick={() => this.handleVideoInPlayList((index + 1), item.id)}>
+                                                                    <div className='index-video'>
+                                                                        {(indexVideo === `${index + 1}`) ? <img src={RightArrow} /> : `${index + 1}`}
                                                                     </div>
-                                                                    <div className='name-channel'>
-
-                                                                        <h6>{item.channel}</h6>
-
+                                                                    <div className='item-video-thumbnails'>
+                                                                        <img className="item-video-img" src={item.img} />
+                                                                        <VideoLength time={this.convertDurationToSeconds(item.duration)} />
                                                                     </div>
+                                                                    <div className='item-video-info'>
+                                                                        <div className="item-video-title">
+                                                                            <h6><b>{item.title.substring(0, (((windowWidth))) - 420)}{this.showEllipsis(item.title, (((windowWidth))) - 420)}</b></h6>
+                                                                        </div>
+                                                                        <div className='name-channel'>
+
+                                                                            <h6>{item.channel}</h6>
+
+                                                                        </div>
+                                                                    </div>
+
+
                                                                 </div>
-
-
-                                                            </div>
-                                                        )
+                                                            )
 
 
 
-                                                    }))
+                                                        }))
+                                                    }
+                                                </CustomScrollbars>
+
+
+
+
+                                            </div>)
+                                            :
+                                            (<div className='container-video-in-playList min' onClick={() => this.handleShowPlayList()}>
+                                                {(+(indexVideo) === (this.props.location?.state?.arrVideoPlayListPromise.length + 1)) ?
+                                                    (<div className='playlist-panel'>
+                                                        <b>Hết danh sách phát</b>
+
+
+
+
+                                                    </div>)
+                                                    :
+                                                    (<div className='playlist-panel'>
+                                                        <b>Tiếp theo:</b>
+                                                        {this.props.location?.state?.arrVideoPlayListPromise && this.props.location?.state?.arrVideoPlayListPromise.length > 0 &&
+                                                            (this.props.location?.state?.arrVideoPlayListPromise?.map((item, index) => {
+                                                                if ((+(indexVideo)) === (index)) {
+                                                                    return (
+                                                                        <div className='item-video-info'>
+                                                                            <div className="item-video-title">
+                                                                                <h6><b>{item.title.substring(0, (((windowWidth))) - 420)}{this.showEllipsis(item.title, (((windowWidth))) - 420)}</b></h6>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    )
+                                                                }
+
+
+
+
+                                                            }))}
+
+
+
+                                                    </div>)
                                                 }
-                                            </CustomScrollbars>
+
+                                                <div className='playlist-panel'>
+                                                    {this.props.location?.state?.PlayList?.snippet?.localized?.title}
+                                                    {'  -  '}
+                                                    {newUrl.get('index')}/{this.props.location.state.arrVideoPlayListPromise.length}
+                                                    <img src={ShowPlayList}  />
+                                                </div>
 
 
 
 
-                                        </div>
+                                            </div>))
+
                                     )}
+
                                 {Object.keys(video).length > 0 &&
                                     (<>
                                         <div className='video-title'>
@@ -603,7 +669,7 @@ class Video extends Component {
 
                                                             <div className='item-videoRelated-author'>
                                                                 <span className='item-videoRelated-info-title'>
-                                                                    {item.video?.title.substring(0, (this.state.windowWidth - 434))}{this.showEllipsis(item.video?.title, (this.state.windowWidth - 434))}
+                                                                    {item.video?.title.substring(0, (windowWidth - 434))}{this.showEllipsis(item.video?.title, (windowWidth - 434))}
                                                                 </span>
 
                                                                 <div className='item-videoRelated-author-title-icon'>
@@ -697,7 +763,7 @@ class Video extends Component {
                                                                                                         </div>
                                                                                                         <div className='info-comment'>
                                                                                                             <div className='name-client-comment'>
-                                                                                                                <b>{itemSub.author?.title}</b> {'  '} {itemSub.publishedTimeText}
+                                                                                                                <b onClick={() => this.handleViewDetailChannel(itemSub.author?.channelId, "channel")}>{itemSub.author?.title}</b> {'  '} {itemSub.publishedTimeText}
                                                                                                             </div>
                                                                                                             <div className='content-comment'>
                                                                                                                 {itemSub.content}
@@ -883,7 +949,7 @@ class Video extends Component {
                                                                                                         </div>
                                                                                                         <div className='info-comment'>
                                                                                                             <div className='name-client-comment'>
-                                                                                                                <b>{itemSub.author?.title}</b> {'  '} {itemSub.publishedTimeText}
+                                                                                                                <b onClick={() => this.handleViewDetailChannel(itemSub.author?.channelId, "channel")}>{itemSub.author?.title}</b> {'  '} {itemSub.publishedTimeText}
                                                                                                             </div>
                                                                                                             <div className='content-comment'>
                                                                                                                 {itemSub.content}
@@ -918,63 +984,110 @@ class Video extends Component {
                                     )}
                             </div>
                             <span>
+
                                 {(this.props.location?.search !== '') &&
                                     (
-                                        <div className='container-video-in-playList'>
-                                            <div className='playlist-name'>
-                                                <h3><b>{this.props.location?.state?.PlayList?.snippet?.localized?.title}</b></h3>
+                                        (isShowPlayList ?
+                                            (<div className='container-video-in-playList'>
+                                                <div className='playlist-name' onClick={() => this.playList()}>
+                                                    <h3><b>{this.props.location?.state?.PlayList?.snippet?.localized?.title}</b></h3>
 
-                                            </div>
-                                            <div className='playlistInfo'>
-                                                <div className='name-channel'>
-                                                    {this.props.location?.state?.PlayList?.snippet?.channelTitle}{'  -  '}{newUrl.get('index')}/{this.props.location.state.arrVideoPlayListPromise.length}
-                                                    <img src={ClosePlayList} />
                                                 </div>
-                                                <div className='icon-interact'>
-                                                    <img className={isRepeat ? 'icon-interact-img-active' : 'icon-interact-img'} onClick={() => this.handleRepeat()} src={Repeat} />
-                                                    <img className={isRandom ? 'icon-interact-img-active' : 'icon-interact-img'} onClick={() => this.handleRandom()} src={RanDom} />
-                                                    <div className='save-playList'><img src={Button} /></div>
+                                                <div className='playlistInfo'>
+                                                    <div className='name-channel'>
+                                                        {this.props.location?.state?.PlayList?.snippet?.channelTitle}{'  -  '}
+                                                        {newUrl.get('index')}/{this.props.location.state.arrVideoPlayListPromise.length}
+                                                        <img src={ClosePlayList} onClick={() => this.handleShowPlayList()} />
+                                                    </div>
+                                                    <div className='icon-interact'>
+                                                        <div className='Repeat-play-list'>
+                                                            <img className={isRepeat ? 'icon-interact-img-active' : 'icon-interact-img'} onClick={() => this.handleRepeat()} src={Repeat} />
+                                                        </div>
+                                                        <div className='Random-play-list'>
+                                                            <img className={isRandom ? 'icon-interact-img-active' : 'icon-interact-img'} onClick={() => this.handleRandom()} src={RanDom} />
+                                                        </div>
+
+
+                                                        <div className='save-playList'><img src={Button} /></div>
+                                                    </div>
+
+                                                </div>
+                                                <CustomScrollbars style={{ height: '370px', width: '100%', display: 'flex' }}>
+                                                    {this.props.location?.state?.arrVideoPlayListPromise && this.props.location?.state?.arrVideoPlayListPromise.length > 0//this.state.arrPlayList[0].id
+                                                        &&
+                                                        (this.props.location?.state?.arrVideoPlayListPromise?.map((item, index) => {
+                                                            return (
+                                                                <div className="item-video" key={index} onClick={() => this.handleVideoInPlayList((index + 1), item.id)}>
+                                                                    <div className='index-video'>
+                                                                        {(indexVideo === `${index + 1}`) ? <img src={RightArrow} /> : `${index + 1}`}
+                                                                    </div>
+                                                                    <div className='item-video-thumbnails'>
+                                                                        <img className="item-video-img" src={item.img} />
+                                                                        <VideoLength time={this.convertDurationToSeconds(item.duration)} />
+                                                                    </div>
+                                                                    <div className='item-video-info'>
+                                                                        <div className="item-video-title">
+                                                                            <h6><b>{item.title.substring(0, (((windowWidth / 3) - 45) * 9 / 10) - 342)}{this.showEllipsis(item.title, (((windowWidth / 3) - 45) * 9 / 10) - 342)}</b></h6>
+                                                                        </div>
+                                                                        <div className='name-channel'>
+
+                                                                            <h6>{item.channel}</h6>
+
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            )
+
+
+
+                                                        }))
+                                                    }
+                                                </CustomScrollbars>
+
+
+
+
+                                            </div>)
+                                            :
+                                            (<div className='container-video-in-playList min' onClick={() => this.handleShowPlayList()}>
+                                                <div className='playlist-panel'>
+                                                    <b>Tiếp theo:</b>
+                                                    {this.props.location?.state?.arrVideoPlayListPromise && this.props.location?.state?.arrVideoPlayListPromise.length > 0 &&
+                                                        (this.props.location?.state?.arrVideoPlayListPromise?.map((item, index) => {
+                                                            if ((+(indexVideo)) === (index)) {
+                                                                return (
+                                                                    <div className='item-video-info'>
+                                                                        <div className="item-video-title">
+                                                                            <h6>{item.title.substring(0, (((windowWidth / 3) - 45) * 9 / 10) - 342)}{this.showEllipsis(item.title, (((windowWidth / 3) - 45) * 9 / 10) - 342)}</h6>
+                                                                        </div>
+
+                                                                    </div>
+                                                                )
+                                                            }
+
+
+
+
+                                                        }))}
+
+
+
+
+                                                </div>
+                                                <div className='playlist-panel'>
+                                                    {this.props.location?.state?.PlayList?.snippet?.localized?.title}
+
+                                                    {'  -  '}
+                                                    {newUrl.get('index')}/{this.props.location.state.arrVideoPlayListPromise.length}
+                                                    <img src={ShowPlayList}  />
                                                 </div>
 
-                                            </div>
-                                            <CustomScrollbars style={{ height: '370px', width: '100%', display: 'flex' }}>
-                                                {this.props.location?.state?.arrVideoPlayListPromise && this.props.location?.state?.arrVideoPlayListPromise.length > 0//this.state.arrPlayList[0].id
-                                                    &&
-                                                    (this.props.location?.state?.arrVideoPlayListPromise?.map((item, index) => {
-                                                        return (
-                                                            <div className="item-video" key={index} onClick={() => this.handleVideoInPlayList((index + 1), item.id)}>
-                                                                <div className='index-video'>
-                                                                    {(indexVideo === `${index + 1}`) ? <img src={RightArrow} /> : `${index + 1}`}
-                                                                </div>
-                                                                <div className='item-video-thumbnails'>
-                                                                    <img className="item-video-img" src={item.img} />
-                                                                    <VideoLength time={this.convertDurationToSeconds(item.duration)} />
-                                                                </div>
-                                                                <div className='item-video-info'>
-                                                                    <div className="item-video-title">
-                                                                        <h6><b>{item.title.substring(0, 63)}{this.showEllipsis(item.title, 63)}</b></h6>
-                                                                    </div>
-                                                                    <div className='name-channel'>
-
-                                                                        <h6>{item.channel}</h6>
-
-                                                                    </div>
-                                                                </div>
 
 
-                                                            </div>
-                                                        )
+                                            </div>))
 
-
-
-                                                    }))
-                                                }
-                                            </CustomScrollbars>
-
-
-
-
-                                        </div>
                                     )}
                                 <div className='container-videoRelated'>
                                     {arrVideoRelated && arrVideoRelated.length > 0 && arrVideoRelated.map((item, index) => {

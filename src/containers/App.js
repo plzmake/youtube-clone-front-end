@@ -14,7 +14,7 @@ import Post from './Youtube/Post';
 import PlayList from './Youtube/PlayList';
 import NotFound from './Youtube/NotFound';
 import { CustomToastCloseButton } from '../components/CustomToast';
-
+import './App.scss';
 //import HomePage from './Youtube/HomePage';
 
 class App extends Component {

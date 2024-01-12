@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as actions from "../../store/actions";
-import Navigator from '../../components/Navigator';
+
 import { IoIosSearch } from "react-icons/io";
-import './HomePage.scss';
+
 import HomeHeader from './HomeHeader';
 import { withRouter } from "react-router";
 import LogoYTB from '../../assets/images/images/ytb.svg'
 import LeftNav from './LeftNav';
-import VideoLength from '../../utils/videoLength';
+
 class NotFound extends Component {
     constructor(props) {
         super(props);

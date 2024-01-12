@@ -1,22 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import * as actions from "../../store/actions";
-import Navigator from '../../components/Navigator';
-import { IoIosSearch } from "react-icons/io";
-import './HomePage.scss';
+
 import HomeHeader from './HomeHeader';
-import { withRouter } from "react-router";
+
 import RanDom from '../../assets/images/images/random.svg';
 import RightArrow from '../../assets/images/images/RightArrowPlayListBlack.svg';
 import LeftNav from './LeftNav';
 import CustomScrollbars from '../../components/CustomScrollbars';
-import {
-    fetchDataCursorPostFromApi,
-    fetchDataCommentsPostFromApi
-} from '../../utils/api';
+
 import { playList } from '../../utils';
-import sorted from '../../assets/images/images/sorted.svg';
+
 import moment from 'moment';
 import VideoLength from '../../utils/videoLength';
 require('moment/locale/vi');
@@ -32,46 +25,11 @@ class PlayList extends Component {
             isLeftNavTotalScreen: false
         };
     }
-    async componentDidMount() {
-        // let cursor = await fetchDataCursorPostFromApi(this.props.match.params.postId);
-        // console.log('cursor', cursor)
-        // this.setState({
-        //     cursorComments: cursor.cursorComments
-        // })
-        // let commentPost = await fetchDataCommentsPostFromApi(cursor.cursorComments);
-        // console.log('comment Post', commentPost)
-        // this.setState({
-        //     commentPost: commentPost
-        // })
-
-        //
+    componentDidMount() {
+       
 
     }
-    async componentDidUpdate(preProps, preState, snapshot) {
-        // if(this.props.match.params.id !== preProps.match.params.id){
-        //     let video = await fetchDataVideoDetailsVideoFromApi(this.props.match.params.id);
-        // this.setState({
-        //     video: video
-        // })
-        // let commentVideo = await fetchDataVideoCommentsVideoFromApi(this.props.match.params.id)
-        // this.setState({
-        //     commentVideo: commentVideo
-        // })
-        // let arrVideoRelated = await fetchDataVideoRelatedContentsVideoFromApi(this.props.match.params.id)
-        // this.setState({
-        //     arrVideoRelated: arrVideoRelated.contents
-        // })
-        // if((Object.keys(this.state.video).length > 0) && (Object.keys(this.state.commentVideo).length > 0) &&(this.state.arrVideoRelated.length > 0 )){
-        //     this.setState({
-        //         isLoading:false
-        //     })
-        // } else {
-        //     this.setState({
-        //         isLoading:true
-        //     })
-        // }
-        // }
-    }
+    
     textPost = (text) => {
         let arr = text.split(/https/g);
         arr[1] = 'https' + arr[1];
@@ -213,6 +171,14 @@ class PlayList extends Component {
         }
         this.props.history.push(`/video/${videoId}/?idPlaylist=${this.props.match.params.playlistId}&index=${index}`, this.props.location?.state);
     }
+    handleViewDetailChannel =  (channelId) => {
+        
+            
+            this.props.history.push(`/channel/${channelId}`)
+        
+        
+
+    }
     render() {
         console.log('this.props play list', this.props)
 
@@ -247,7 +213,7 @@ class PlayList extends Component {
                                                 <div className='channel-Play-list-Interactive-Icon'>
 
                                                     <div className='name-channel-number-video'>
-                                                        <div className='play-list-entry-name-channel'>
+                                                        <div className='play-list-entry-name-channel' onClick={() => this.handleViewDetailChannel(this.props.location?.state?.PlayList?.snippet?.channelId)}>
                                                             {this.props.location?.state?.PlayList?.snippet?.channelTitle}
                                                         </div>
                                                         <div className='play-list-entry-count-video'>

@@ -22,8 +22,8 @@ import Shared from '../../assets/images/images/share.svg';
 import Comment from '../../assets/images/images/commentPost.svg';
 import HomeHeader from './HomeHeader';
 import { withRouter } from "react-router";
-import { listChoiceChannel, listChoiceVideoChannel, listChoiceSubChannel } from '../../utils';
-import { FiBell } from "react-icons/fi";
+import { listChoiceChannel, listChoiceSubChannel } from '../../utils';
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

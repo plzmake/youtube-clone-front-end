@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+
 import { connect } from 'react-redux';
 import { detailChannel } from '../../utils';
 import CustomScrollbars from '../../components/CustomScrollbars';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {  Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 class ModalDes extends Component {
 

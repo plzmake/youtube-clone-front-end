@@ -6,7 +6,7 @@ import { fetchDataSearchSearchFromApi } from '../../utils/api';
 import VideoLength from '../../utils/videoLength';
 import CustomScrollbars from '../../components/CustomScrollbars';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
-import './HomePage.scss';
+
 import HomeHeader from './HomeHeader';
 import { withRouter } from "react-router";
 
@@ -79,10 +79,10 @@ class Search extends Component {
     }
     test = (data) => {
         if (data > 1000000) {//Math.floor(number * 10) % 10
-            let text = `${Math.floor(data / 1000000)},${Math.floor(data / 100000) % 10} M  `;
+            let text = `${Math.floor(data / 1000000)},${Math.floor(data / 100000) % 10} Tr  `;
             return text;
         } else if (data > 1000) {
-            let text = `${Math.floor(data / 1000)},${Math.floor(data / 100) % 10} K  `;
+            let text = `${Math.floor(data / 1000)},${Math.floor(data / 100) % 10} N  `;
             return text;
         } else {
             return `${data}  `

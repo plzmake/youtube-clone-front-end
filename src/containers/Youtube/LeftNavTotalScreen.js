@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-//import './Header.scss';
+
 import { categories } from '../../utils';
 import RightArrow from '../../assets/images/images/rightArrow.svg';
 import CustomScrollbars from '../../components/CustomScrollbars';
