@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
 import { IoIosSearch } from "react-icons/io";
-
 import HomeHeader from './HomeHeader';
 import { withRouter } from "react-router";
 import LogoYTB from '../../assets/images/images/ytb.svg'

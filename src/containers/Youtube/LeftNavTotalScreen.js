@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-
 import { categories } from '../../utils';
 import RightArrow from '../../assets/images/images/rightArrow.svg';
 import CustomScrollbars from '../../components/CustomScrollbars';
-
 import { SlMenu, } from "react-icons/sl";
 import LogoYTB from '../../assets/images/images/ytb.svg'
 class LeftNavTotalScreen extends Component {

@@ -78,7 +78,7 @@ class Search extends Component {
         })
     }
     test = (data) => {
-        if (data > 1000000) {//Math.floor(number * 10) % 10
+        if (data > 1000000) {
             let text = `${Math.floor(data / 1000000)},${Math.floor(data / 100000) % 10} Tr  `;
             return text;
         } else if (data > 1000) {
@@ -103,7 +103,8 @@ class Search extends Component {
     }
     hanleShowLeftNav = () => {
         this.setState({
-            isShowLeftNav: !this.state.isShowLeftNav
+            isShowLeftNav: !this.state.isShowLeftNav,
+            isLeftNavTotalScreen: false
         })
     }
     handleShowLeftNavTotalScreen = () => {

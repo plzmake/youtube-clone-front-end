@@ -63,9 +63,14 @@ class Video extends Component {
             setTimeout(resolve, 1000);
         });
         let video = await fetchDataVideoDetailsVideoFromApi(this.props.match.params.id);
-        this.setState({
-            video: video
-        })
+        if (video === 'error') {
+            this.props.history.push(`/video//${this.props.match.params.id}`)
+        } else {
+            this.setState({
+                video: video
+            })
+        }
+        
         await new Promise((resolve) => {
             setTimeout(resolve, 2000);
         });
@@ -111,9 +116,14 @@ class Video extends Component {
                 setTimeout(resolve, 1000);
             });
             let video = await fetchDataVideoDetailsVideoFromApi(this.props.match.params.id);
-            this.setState({
-                video: video
-            })
+            if (video === 'error') {
+                this.props.history.push(`/video//${this.props.match.params.id}`)
+            } else {
+                this.setState({
+                    video: video
+                })
+            }
+            
             await new Promise((resolve) => {
                 setTimeout(resolve, 2000);
             });
@@ -144,28 +154,24 @@ class Video extends Component {
         }
     }
     componentWillUnmount() {
-        // Xóa event listener khi component bị unmount để tránh memory leak
-        //window.innerWidth
+        
         window.removeEventListener('resize', this.handleResize);
     }
     buildArrCommentReply = (commentVideo) => {
 
-        // Thực hiện xử lý trên từng đối tượng ở đây và trả về kết quả xử lý
+        
         let updatedArrChoice = [];
         for (let i = 0; i < commentVideo.comments.length; i++) {
-            // await new Promise((resolve) => {
-            //     setTimeout(resolve, 300 * i);
-            // });
-            // let commentReplyVideo = await fetchDataReplyCommentVideoFromApi(this.props.match.params.id, commentVideo.comments[i].cursorReplies);
+            
             let obj = {};
 
             obj.isShowReply = false;
             obj.cursor = commentVideo.comments[i].cursorReplies;
             obj.commentReplyVideo = {};
 
-            // Thêm các trường khác cần xử lý
+            
             updatedArrChoice.push(obj)
-            // Xử lý kết quả API ở đây
+            
         }
 
         return updatedArrChoice;
@@ -178,7 +184,7 @@ class Video extends Component {
                 isMobile: true
             })
 
-            // Xử lý khi kích thước màn hình nhỏ hơn hoặc bằng 800px
+            
 
         } else {
             console.log('chieu dai lon hon 800', window.matchMedia('(max-width: 800px)').matches)
@@ -191,7 +197,7 @@ class Video extends Component {
         }
     };
     test = (data) => {
-        if (data > 1000000) {//Math.floor(number * 10) % 10
+        if (data > 1000000) {
             let text = `${Math.floor(data / 1000000)},${Math.floor(data / 100000) % 10} Tr  `;
             return text;
         } else if (data > 1000) {
@@ -212,7 +218,7 @@ class Video extends Component {
         let currentTime = moment();
 
         let diff = moment.duration(currentTime.diff(videoCreationTime)).locale('vi').humanize()//.split(" ")?.filter(Boolean)?.[0];
-        //let reslt = `${diff} năm trước`
+        
 
         console.log('videoCreationTime', videoCreationTime);
         console.log('currentTime', currentTime);
@@ -293,9 +299,7 @@ class Video extends Component {
                 }
                 return item;
             });
-            // Promise.all(updatedArr).then(updatedArrResolved => {
-            //     this.setState({ arrChoice: updatedArrResolved });
-            // });
+            
             let abc = await Promise.all(updatedArr);
             this.setState({
                 arrChoice: abc
@@ -326,7 +330,7 @@ class Video extends Component {
             let totalTimeInSeconds = hours * 3600 + minutes * 60 + seconds;
             return totalTimeInSeconds;
         } else {
-            return 0; // Trả về 0 hoặc giá trị mặc định nếu chuỗi không khớp định dạng
+            return 0; 
         }
     }
     handleVideoInPlayList = (index, videoId) => {
@@ -757,7 +761,7 @@ class Video extends Component {
                                                                                             {itemChoice?.commentReplyVideo?.comments?.length > 0 && itemChoice?.commentReplyVideo?.comments?.map((itemSub, index) => {
                                                                                                 return (
                                                                                                     <div className='comment-video-item' key={index}>
-                                                                                                        <div className='item-comment-avatar'>
+                                                                                                        <div className='item-comment-avatar' onClick={() => this.handleViewDetailChannel(itemSub.author?.channelId, "channel")}>
                                                                                                             <img className='item-comment-avatar-img'
                                                                                                                 src={itemSub.author?.avatar[0]?.url} />
                                                                                                         </div>
@@ -943,7 +947,7 @@ class Video extends Component {
                                                                                             {itemChoice?.commentReplyVideo?.comments?.length > 0 && itemChoice?.commentReplyVideo?.comments?.map((itemSub, index) => {
                                                                                                 return (
                                                                                                     <div className='comment-video-item' key={index}>
-                                                                                                        <div className='item-comment-avatar'>
+                                                                                                        <div className='item-comment-avatar' onClick={() => this.handleViewDetailChannel(itemSub.author?.channelId, "channel")}>
                                                                                                             <img className='item-comment-avatar-img'
                                                                                                                 src={itemSub.author?.avatar[0]?.url} />
                                                                                                         </div>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import LeftNav from './LeftNav';
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import {
@@ -23,7 +22,6 @@ import Comment from '../../assets/images/images/commentPost.svg';
 import HomeHeader from './HomeHeader';
 import { withRouter } from "react-router";
 import { listChoiceChannel, listChoiceSubChannel } from '../../utils';
-
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -60,12 +58,19 @@ class Channel extends Component {
         }; this.handleResize = this.handleResize.bind(this);
     }///search/:search
     async componentDidMount() {
-        let number = 7;
-        let detailChannel = await fetchDataChannelDetailsChannelFromApi(this.props.match.params.channel)
-        this.setState({
-            channel: detailChannel,
-            isLoading: true
-        })
+        let number = 7; // đây là số video hạn chế  trong mỗi danh sách phát đã tạo 
+        // anh ,chị có thể thay đổi giá trị này với điều kiện dưới 50
+        // với trên 50 thì sẽ thêm tham số cursor và thêm push ,đổi code api 
+        let detailChannel = await fetchDataChannelDetailsChannelFromApi(this.props.match.params.channel);
+        if ( detailChannel === 'error') {
+            this.props.history.push(`/channel//${this.props.match.params.channel}`)
+        } else {
+            this.setState({
+                channel: detailChannel,
+                isLoading: true
+            })
+        }
+        
         this.handleResize();
         window.addEventListener('resize', this.handleResize);
         console.log('show detail channel', detailChannel);
@@ -74,7 +79,7 @@ class Channel extends Component {
             setTimeout(resolve, 1000);
         });
 
-        if (this.state.channel.stats.videos !== null) {
+        if ((this.state.channel.stats.videos !== null) && (detailChannel !== 'error')) {
             let dataArrVideoRating = await fetchArrVideoDataChannelChoiceFromApi(this.props.match.params.channel, 'rating');
             let arrVideoRating = await this.buildArrInfoVideoItemOfPlayListChannel(dataArrVideoRating.items);
             let arrVideoRatingPromise = await Promise.all(arrVideoRating);
@@ -472,8 +477,6 @@ class Channel extends Component {
 
         this.setState({
             isLeftNavTotalScreen: !this.state.isLeftNavTotalScreen,
-            
-
         })
         console.log('isLeftNavTotalScreen', this.state.isLeftNavTotalScreen)
     }

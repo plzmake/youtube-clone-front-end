@@ -1,4 +1,14 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+First 
+- You should use node.js version 14.17.0
+
+- Get key from https://rapidapi.com/Glavier/api/youtube138/ and https://rapidapi.com/Glavier/api/youtube-v311/ 
+
+- How to get key in video demo
+
+- Then you can run 
+
+### `npm i`
 
 ## Available Scripts
 

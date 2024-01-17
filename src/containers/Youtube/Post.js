@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-
 import HomeHeader from './HomeHeader';
-
 import Shared from '../../assets/images/images/share.svg';
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import LeftNav from './LeftNav';

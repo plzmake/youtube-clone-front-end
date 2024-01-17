@@ -34,8 +34,13 @@ export const fetchDataVideoDetailsVideoFromApi = async (id) => {
       'X-RapidAPI-Host': 'youtube138.p.rapidapi.com'
     }
   };
-  const { data } = await axios.request(options);
-  return data;
+  try {
+    const { data } = await axios.request(options);
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API:', error);
+    return 'error'; // Trả về '*' khi gặp lỗi
+  }
 };
 export const fetchDataVideoCommentsVideoFromApi = async (id) => {
   const options = {
@@ -129,12 +134,12 @@ export const fetchDataAutoCompleteHomeHeaderFromApi = async (query) => {
 };
 
 
-export const fetchDataChannelDetailsChannelFromApi = async (id) => {
+export const fetchDataChannelDetailsChannelFromApi = async (channelId) => {
   const options = {
     method: 'GET',
     url: 'https://youtube138.p.rapidapi.com/channel/details/',
     params: {
-      id: id,
+      id: channelId,
       hl: 'vi',
       gl: 'US'
     },
@@ -144,8 +149,13 @@ export const fetchDataChannelDetailsChannelFromApi = async (id) => {
     }
   };
 
-  const { data } = await axios.request(options);
-  return data;
+  try {
+    const { data } = await axios.request(options);
+    return data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API:', error);
+    return 'error'; // Trả về '*' khi gặp lỗi
+  }
 };
 
 export const fetchDataPlayListDetailFromApi = async (channelId, maxResults = 5) => {
@@ -158,7 +168,7 @@ export const fetchDataPlayListDetailFromApi = async (channelId, maxResults = 5) 
       maxResults: maxResults
     },
     headers: {
-      'X-RapidAPI-Key': 'ca2d74929cmsha3165a568f2019cp166b56jsncf766bc72b68',
+      'X-RapidAPI-Key': process.env.REACT_APP_YOUTUBE_API_KEY_DATA_PLAY_LIST_DETAIL_CHANNEL,
       'X-RapidAPI-Host': 'youtube-v311.p.rapidapi.com'
     }
   };
@@ -201,14 +211,12 @@ export const fetchDataArrPostCommunityChannelFromApi = async (channelId) => {
 }
 
 export const fetchArrVideoDataChannelChoiceFromApi = async (channelId, order,publishedBefore = new Date(),maxResults = '10') => {
-  // return new Promise( async(res,rej) => {
-  // try {
-  //  let data ={};
+  
   let options = {
     method: 'GET',
     url: 'https://youtube-v311.p.rapidapi.com/search/',
     params: {
-      //part: 'snippet,contentDetails,statistics',
+      
       part: 'snippet',
       maxResults: maxResults,
       order: order,
@@ -224,16 +232,11 @@ export const fetchArrVideoDataChannelChoiceFromApi = async (channelId, order,pub
   };
   const { data } = await axios.request(options);
   return data;
-  //    res(data)
-  // } catch(e) {
-  //     console.log('try chatch erroe',e)
-  // }
-  //  })
+ 
 }
 
 export const fetchDetailVideoDataChannelFromApi = async (id) => {
-  // return new Promise(async (res, rej) => {
-  //   try {
+  
       const options = {
         method: 'GET',
         url: 'https://youtube-v311.p.rapidapi.com/videos/',

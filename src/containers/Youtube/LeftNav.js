@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { categories } from '../../utils';
 import RightArrow from '../../assets/images/images/rightArrow.svg';
 import CustomScrollbars from '../../components/CustomScrollbars';
 import YouLeftNav from '../../assets/images/images/youLeftNav.svg';
-
 import LeftNavTotalScreen from './LeftNavTotalScreen';
 
 class LeftNav extends Component {

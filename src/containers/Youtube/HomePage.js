@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import LeftNav from './LeftNav';
 import { fetchDataSearchHomPageFromApi} from '../../utils/api';
 import VideoLength from '../../utils/videoLength';
 import CustomScrollbars from '../../components/CustomScrollbars';
 import { BsFillCheckCircleFill } from 'react-icons/bs';
-
 import HomeHeader from './HomeHeader';
 import { withRouter } from "react-router";
 import { listChoice } from '../../utils';

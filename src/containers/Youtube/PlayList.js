@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import HomeHeader from './HomeHeader';
-
 import RanDom from '../../assets/images/images/random.svg';
 import RightArrow from '../../assets/images/images/RightArrowPlayListBlack.svg';
 import LeftNav from './LeftNav';
 import CustomScrollbars from '../../components/CustomScrollbars';
-
 import { playList } from '../../utils';
-
 import moment from 'moment';
 import VideoLength from '../../utils/videoLength';
 require('moment/locale/vi');
